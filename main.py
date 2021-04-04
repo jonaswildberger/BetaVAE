@@ -33,7 +33,7 @@ def main():
 
     trainer = Trainer(model, optimizer, device = device)
     print("training")
-    trainer(train_loader, epochs=1)
+    trainer(train_loader, epochs=15)
 
 
     test_loader = get_dataloaders('dsprites',
