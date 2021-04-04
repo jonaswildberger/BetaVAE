@@ -63,7 +63,7 @@ class BetaVAE(BaseVAE):
         self.num_iter += 1
         batch_size = x.size(0)
 
-        recon_loss =F.binary_cross_entropy(recon, x.view(-1, 4096), reduction='sum')
+        recon_loss =F.binary_cross_entropy(recon, x.view(batch_size, 4096), reduction='sum')
         kld_loss = -0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp())
 
         

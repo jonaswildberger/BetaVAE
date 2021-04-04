@@ -26,7 +26,7 @@ def main():
                                        batch_size=256, shuffle=True)
     model = BetaVAE(10, beta=4) 
 
-    device = torch.device("cpu" if torch.cuda.is_available() else "cpu")
+    device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
     optimizer = optim.Adagrad(model.parameters(), lr=0.01)
     
