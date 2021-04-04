@@ -24,7 +24,7 @@ def main():
 
     train_loader = get_dataloaders("dsprites",
                                        batch_size=256, shuffle=True)
-    model = BetaVAE(10, beta=4) 
+    model = BetaVAE(10, beta=1) 
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
