@@ -62,8 +62,8 @@ class BetaVAE(BaseVAE):
     def loss_function(self, recon, x, mu, log_var):
         self.num_iter += 1
         batch_size = x.size(0)
-
-        recon_loss =F.binary_cross_entropy(recon, x.view(batch_size, 4096), reduction='sum')
+        print(x.view(-1, 4096).shape)
+        recon_loss =F.binary_cross_entropy(recon, x.view(batch_size, 4096), reduction='sum')/batch_size
         kld_loss = -0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp())
 
         
@@ -71,7 +71,6 @@ class BetaVAE(BaseVAE):
 
         
         return loss
-
 
     #smaple form latent sapce
     def sample(self,
