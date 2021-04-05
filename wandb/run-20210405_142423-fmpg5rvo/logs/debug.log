@@ -1,0 +1,49 @@
+2021-04-05 14:24:23,507 INFO    MainThread:1155729 [wandb_setup.py:_flush():69] setting env: {'entity': 'atml', 'project': 'atmlbetavae', 'sweep_id': 'd4jqht87', 'root_dir': '/home/jonas/Desktop/ATML/scratch', 'run_id': 'fmpg5rvo', 'sweep_param_path': '/home/jonas/Desktop/ATML/scratch/wandb/sweep-d4jqht87/config-fmpg5rvo.yaml'}
+2021-04-05 14:24:23,507 INFO    MainThread:1155729 [wandb_setup.py:_flush():69] setting login settings: {}
+2021-04-05 14:24:23,507 INFO    MainThread:1155729 [wandb_setup.py:_flush():69] setting login settings: {}
+2021-04-05 14:24:23,507 INFO    MainThread:1155729 [wandb_init.py:_log_setup():336] Logging user logs to /home/jonas/Desktop/ATML/scratch/wandb/run-20210405_142423-fmpg5rvo/logs/debug.log
+2021-04-05 14:24:23,508 INFO    MainThread:1155729 [wandb_init.py:_log_setup():337] Logging internal logs to /home/jonas/Desktop/ATML/scratch/wandb/run-20210405_142423-fmpg5rvo/logs/debug-internal.log
+2021-04-05 14:24:23,508 INFO    MainThread:1155729 [wandb_init.py:init():369] calling init triggers
+2021-04-05 14:24:23,508 INFO    MainThread:1155729 [wandb_init.py:init():374] wandb.init called with sweep_config: {'all_latents': True, 'batch-size': 256, 'beta': 4, 'dataset_size': 1000, 'epochs': 10, 'lr': 0.01, 'name': 'test', 'sample_size': 64, 'seed': 9321}
+config: {}
+2021-04-05 14:24:23,508 INFO    MainThread:1155729 [wandb_init.py:init():418] starting backend
+2021-04-05 14:24:23,508 INFO    MainThread:1155729 [backend.py:_multiprocessing_setup():69] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2021-04-05 14:24:23,513 INFO    MainThread:1155729 [backend.py:ensure_launched():123] starting backend process...
+2021-04-05 14:24:23,515 INFO    MainThread:1155729 [backend.py:ensure_launched():127] started backend process with pid: 1155783
+2021-04-05 14:24:23,516 INFO    MainThread:1155729 [wandb_init.py:init():423] backend started and connected
+2021-04-05 14:24:23,517 INFO    MainThread:1155729 [wandb_run.py:_config_callback():749] config_cb None None {'all_latents': True, 'batch-size': 256, 'beta': 4, 'dataset_size': 1000, 'epochs': 10, 'lr': 0.01, 'name': 'test', 'sample_size': 64, 'seed': 9321}
+2021-04-05 14:24:23,517 INFO    MainThread:1155729 [wandb_init.py:init():463] updated telemetry
+2021-04-05 14:24:23,518 INFO    MainThread:1155729 [wandb_init.py:init():482] communicating current version
+2021-04-05 14:24:23,881 INFO    MainThread:1155729 [wandb_init.py:init():487] got version response 
+2021-04-05 14:24:23,881 INFO    MainThread:1155729 [wandb_init.py:init():495] communicating run to backend with 30 second timeout
+2021-04-05 14:24:24,083 INFO    MainThread:1155729 [wandb_init.py:init():520] starting run threads in backend
+2021-04-05 14:24:24,109 INFO    MainThread:1155729 [wandb_run.py:_console_start():1524] atexit reg
+2021-04-05 14:24:24,109 INFO    MainThread:1155729 [wandb_run.py:_redirect():1371] redirect: SettingsConsole.REDIRECT
+2021-04-05 14:24:24,110 INFO    MainThread:1155729 [wandb_run.py:_redirect():1376] Redirecting console.
+2021-04-05 14:24:24,111 INFO    MainThread:1155729 [wandb_run.py:_redirect():1438] Redirects installed.
+2021-04-05 14:24:24,111 INFO    MainThread:1155729 [wandb_init.py:init():544] run started, returning control to user process
+2021-04-05 14:24:24,115 INFO    MainThread:1155729 [wandb_run.py:_config_callback():749] config_cb None None {'batch_size': 256, 'dry_run': False, 'wandb_log': True, 'wandb_key': None}
+2021-04-05 14:32:21,186 INFO    MainThread:1155729 [wandb_run.py:_atexit_cleanup():1494] got exitcode: 0
+2021-04-05 14:32:21,186 INFO    MainThread:1155729 [wandb_run.py:_restore():1466] restore
+2021-04-05 14:32:23,486 INFO    MainThread:1155729 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 994
+  total_bytes: 994
+}
+
+2021-04-05 14:32:25,489 INFO    MainThread:1155729 [wandb_run.py:_wait_for_finish():1616] got exit ret: done: true
+exit_result {
+}
+file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 3473
+  total_bytes: 3473
+}
+
+2021-04-05 14:32:26,540 INFO    MainThread:1155729 [wandb_run.py:_show_summary():1771] rendering summary
+2021-04-05 14:32:26,540 INFO    MainThread:1155729 [wandb_run.py:_show_history():1809] rendering history
+2021-04-05 14:32:26,541 INFO    MainThread:1155729 [wandb_run.py:_show_files():1838] logging synced files

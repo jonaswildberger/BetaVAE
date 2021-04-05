@@ -1,0 +1,469 @@
+2021-04-05 12:42:41,113 INFO    MainThread:1015160 [wandb_setup.py:_flush():69] setting env: {}
+2021-04-05 12:42:41,113 INFO    MainThread:1015160 [wandb_setup.py:_flush():69] setting login settings: {}
+2021-04-05 12:42:41,114 INFO    MainThread:1015160 [wandb_setup.py:_flush():69] setting login settings: {}
+2021-04-05 12:42:41,114 INFO    MainThread:1015160 [wandb_init.py:_log_setup():336] Logging user logs to /home/jonas/Desktop/ATML/scratch/wandb/run-20210405_124241-25i0558w/logs/debug.log
+2021-04-05 12:42:41,114 INFO    MainThread:1015160 [wandb_init.py:_log_setup():337] Logging internal logs to /home/jonas/Desktop/ATML/scratch/wandb/run-20210405_124241-25i0558w/logs/debug-internal.log
+2021-04-05 12:42:41,114 INFO    MainThread:1015160 [wandb_init.py:init():369] calling init triggers
+2021-04-05 12:42:41,114 INFO    MainThread:1015160 [wandb_init.py:init():374] wandb.init called with sweep_config: {}
+config: {}
+2021-04-05 12:42:41,114 INFO    MainThread:1015160 [wandb_init.py:init():418] starting backend
+2021-04-05 12:42:41,114 INFO    MainThread:1015160 [backend.py:_multiprocessing_setup():69] multiprocessing start_methods=fork,spawn,forkserver, using: spawn
+2021-04-05 12:42:41,121 INFO    MainThread:1015160 [backend.py:ensure_launched():123] starting backend process...
+2021-04-05 12:42:41,124 INFO    MainThread:1015160 [backend.py:ensure_launched():127] started backend process with pid: 1015337
+2021-04-05 12:42:41,125 INFO    MainThread:1015160 [wandb_init.py:init():423] backend started and connected
+2021-04-05 12:42:41,126 INFO    MainThread:1015160 [wandb_init.py:init():463] updated telemetry
+2021-04-05 12:42:41,126 INFO    MainThread:1015160 [wandb_init.py:init():482] communicating current version
+2021-04-05 12:42:46,126 INFO    MainThread:1015160 [wandb_init.py:init():495] communicating run to backend with 30 second timeout
+2021-04-05 12:42:56,324 INFO    MainThread:1015160 [wandb_init.py:init():520] starting run threads in backend
+2021-04-05 12:42:56,350 INFO    MainThread:1015160 [wandb_run.py:_console_start():1524] atexit reg
+2021-04-05 12:42:56,350 INFO    MainThread:1015160 [wandb_run.py:_redirect():1371] redirect: SettingsConsole.REDIRECT
+2021-04-05 12:42:56,351 INFO    MainThread:1015160 [wandb_run.py:_redirect():1376] Redirecting console.
+2021-04-05 12:42:56,352 INFO    MainThread:1015160 [wandb_run.py:_redirect():1438] Redirects installed.
+2021-04-05 12:42:56,352 INFO    MainThread:1015160 [wandb_init.py:init():544] run started, returning control to user process
+2021-04-05 12:42:56,353 INFO    MainThread:1015160 [wandb_run.py:_config_callback():749] config_cb None None {'name': None, 'seed': None, 'epochs': 1, 'batch_size': 256, 'lr': 0.01, 'dry_run': False, 'wandb_log': True, 'wandb_key': None, 'sample_size': 64, 'dataset_size': 10000, 'all_latents': False, 'beta': 1}
+2021-04-05 12:43:41,905 ERROR   Thread-1  :1015160 [retry.py:__call__():111] Retry attempt failed:
+Traceback (most recent call last):
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/connection.py", line 169, in _new_conn
+    conn = connection.create_connection(
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/util/connection.py", line 73, in create_connection
+    for res in socket.getaddrinfo(host, port, family, socket.SOCK_STREAM):
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/socket.py", line 953, in getaddrinfo
+    for res in _socket.getaddrinfo(host, port, family, type, proto, flags):
+socket.gaierror: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/connectionpool.py", line 699, in urlopen
+    httplib_response = self._make_request(
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/connectionpool.py", line 382, in _make_request
+    self._validate_conn(conn)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/connectionpool.py", line 1010, in _validate_conn
+    conn.connect()
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/connection.py", line 353, in connect
+    conn = self._new_conn()
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/connection.py", line 181, in _new_conn
+    raise NewConnectionError(
+urllib3.exceptions.NewConnectionError: <urllib3.connection.HTTPSConnection object at 0x7ff7e1b41d90>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/requests/adapters.py", line 439, in send
+    resp = conn.urlopen(
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/connectionpool.py", line 755, in urlopen
+    retries = retries.increment(
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/urllib3/util/retry.py", line 574, in increment
+    raise MaxRetryError(_pool, url, error or ResponseError(cause))
+urllib3.exceptions.MaxRetryError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff7e1b41d90>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/wandb/old/retry.py", line 96, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/wandb/sdk/internal/internal_api.py", line 123, in execute
+    return self.client.execute(*args, **kwargs)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/wandb/vendor/gql-0.2.0/gql/client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/wandb/vendor/gql-0.2.0/gql/client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/wandb/vendor/gql-0.2.0/gql/transport/requests.py", line 38, in execute
+    request = requests.post(self.url, **post_args)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/requests/api.py", line 119, in post
+    return request('post', url, data=data, json=json, **kwargs)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/requests/api.py", line 61, in request
+    return session.request(method=method, url=url, **kwargs)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/requests/sessions.py", line 542, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/requests/sessions.py", line 655, in send
+    r = adapter.send(request, **kwargs)
+  File "/home/jonas/anaconda3/envs/ATML/lib/python3.9/site-packages/requests/adapters.py", line 516, in send
+    raise ConnectionError(e, request=request)
+requests.exceptions.ConnectionError: HTTPSConnectionPool(host='api.wandb.ai', port=443): Max retries exceeded with url: /graphql (Caused by NewConnectionError('<urllib3.connection.HTTPSConnection object at 0x7ff7e1b41d90>: Failed to establish a new connection: [Errno -3] Temporary failure in name resolution'))
+2021-04-05 12:43:42,724 INFO    MainThread:1015160 [wandb_run.py:_atexit_cleanup():1494] got exitcode: 1
+2021-04-05 12:43:42,724 INFO    MainThread:1015160 [wandb_run.py:_restore():1466] restore
+2021-04-05 12:43:44,922 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 1
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 794
+}
+
+2021-04-05 12:43:46,926 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:43:48,929 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:43:50,933 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:43:52,936 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:43:54,940 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:43:56,943 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:43:58,947 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:00,950 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:02,954 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:04,957 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:06,960 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:08,968 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:10,971 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:12,972 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:14,976 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:16,979 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:18,983 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:20,986 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:22,990 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:24,993 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:26,997 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:29,000 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:31,003 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:33,007 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:35,010 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:37,014 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:39,017 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:41,020 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:43,024 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:45,027 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:47,031 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:49,033 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:51,036 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:53,039 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:55,043 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:57,046 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:44:59,050 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:01,053 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:03,056 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:05,060 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:07,063 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:09,067 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:11,068 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:13,071 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:15,074 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:17,076 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+
+2021-04-05 12:45:19,080 INFO    MainThread:1015160 [wandb_run.py:_wait_for_finish():1616] got exit ret: file_counts {
+  wandb_count: 5
+}
+pusher_stats {
+  uploaded_bytes: 794
+  total_bytes: 2687
+}
+

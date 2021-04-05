@@ -11,12 +11,17 @@ from tqdm import trange, tqdm
 import torch
 from torch.nn import functional as F
 
+import wandb
 
 class Evaluator():
 
-    def __init__(self, model, device=torch.device("cpu")):
-
+    def __init__(self, model, device=torch.device("cpu"), sample_size=64,
+                 dataset_size=1000, all_latents = False, use_wandb = True):
+        self.sample_size = sample_size
+        self.use_wandb = use_wandb
+        self.dataset_size = dataset_size
         self.device = device
+        self.all_latents = all_latents
         self.model = model.to(self.device)
 
     def __call__(self, data_loader):
@@ -28,7 +33,10 @@ class Evaluator():
     def compute_metrics(self, dataloader):
         
 
-        accuracies = self._disentanglement_metric(dataloader.dataset, ["VAE", "PCA", "ICA"], sample_size=64, dataset_size=1000)
+        accuracies = self._disentanglement_metric(dataloader.dataset, ["VAE", "PCA", "ICA"], sample_size=self.sample_size, dataset_size=self.dataset_size)
+        
+        if self.use_wandb:
+            wandb.save("disentanglement_netrics.h5")
         print("accuracy:", accuracies)
 
         return accuracies
@@ -121,7 +129,7 @@ class Evaluator():
         reference: https://github.com/deepmind/dsprites-dataset/blob/master/dsprites_reloading_example.ipynb
         """
         #if dsprites:
-        if dataset.lat_sizes.size == 5:
+        if dataset.lat_sizes.size == 5 and not self.all_latents:
             y = np.random.randint(1, dataset.lat_sizes.size, size=1)
         else:
             y = np.random.randint(dataset.lat_sizes.size, size=1)

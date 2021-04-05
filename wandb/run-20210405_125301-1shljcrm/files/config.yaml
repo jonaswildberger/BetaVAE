@@ -1,0 +1,57 @@
+wandb_version: 1
+
+_wandb:
+  desc: null
+  value:
+    cli_version: 0.10.24
+    framework: torch
+    is_jupyter_run: false
+    is_kaggle_kernel: false
+    python_version: 3.9.2
+    t:
+      1:
+      - 1
+      - 5
+      2:
+      - 1
+      - 5
+      4: 3.9.2
+      5: 0.10.24
+      8:
+      - 5
+all_latents:
+  desc: null
+  value: false
+batch_size:
+  desc: null
+  value: 256
+beta:
+  desc: null
+  value: 1
+dataset_size:
+  desc: null
+  value: 1000
+dry_run:
+  desc: null
+  value: false
+epochs:
+  desc: null
+  value: 1
+lr:
+  desc: null
+  value: 0.01
+name:
+  desc: null
+  value: null
+sample_size:
+  desc: null
+  value: 64
+seed:
+  desc: null
+  value: null
+wandb_key:
+  desc: null
+  value: null
+wandb_log:
+  desc: null
+  value: true
