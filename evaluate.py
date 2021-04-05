@@ -28,7 +28,7 @@ class Evaluator():
     def compute_metrics(self, dataloader):
         
 
-        accuracies = self._disentanglement_metric(dataloader.dataset, ["VAE", "PCA", "ICA"], sample_size=64, dataset_size=10000)
+        accuracies = self._disentanglement_metric(dataloader.dataset, ["VAE", "PCA", "ICA"], sample_size=64, dataset_size=1000)
         print("accuracy:", accuracies)
 
         return accuracies

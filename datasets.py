@@ -10,6 +10,8 @@ from skimage.io import imread
 from PIL import Image
 from tqdm import tqdm
 import numpy as np
+from torch.utils.data import Subset
+from sklearn.model_selection import train_test_split
 
 import torch
 from torch.utils.data import Dataset, DataLoader
@@ -64,11 +66,17 @@ def get_dataloaders(dataset, root=None, shuffle=True, pin_memory=True,
     pin_memory = pin_memory and torch.cuda.is_available  # only pin if GPU available
     Dataset = get_dataset(dataset)
     dataset = Dataset(logger=logger) if root is None else Dataset(root=root, logger=logger)
+
     return DataLoader(dataset,
                       batch_size=batch_size,
-                      shuffle=shuffle,
+                      shuffle=True,
+                      pin_memory=pin_memory,
+                      **kwargs), DataLoader(dataset,
+                      batch_size=batch_size,
+                      shuffle=False,
                       pin_memory=pin_memory,
                       **kwargs)
+
 
 
 class DisentangledDataset(Dataset, abc.ABC):
@@ -159,13 +167,7 @@ class DSprites(DisentangledDataset):
                                     0.16129032, 0.19354839, 0.22580645, 0.25806452,
                                     0.29032258, 0.32258065, 0.35483871, 0.38709677,
                                     0.41935484, 0.4516129, 0.48387097, 0.51612903,
-                                    0.5483871, 0.58064516, 0.61290323, 0.64516129,
-                                    0.67741935, 0.70967742, 0.74193548, 0.77419355,
-                                    0.80645161, 0.83870968, 0.87096774, 0.90322581,
-                                    0.93548387, 0.96774194, 1.]),
-                  'scale': np.array([0.5, 0.6, 0.7, 0.8, 0.9, 1.]),
-                  'orientation': np.array([0., 0.16110732, 0.32221463, 0.48332195,
-                                           0.64442926, 0.80553658, 0.96664389, 1.12775121,
+                                    0.5483871, 0.58064516, 0.3658, 0.96664389, 1.12775121,
                                            1.28885852, 1.44996584, 1.61107316, 1.77218047,
                                            1.93328779, 2.0943951, 2.25550242, 2.41660973,
                                            2.57771705, 2.73882436, 2.89993168, 3.061039,
