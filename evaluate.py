@@ -129,7 +129,9 @@ class Evaluator():
         reference: https://github.com/deepmind/dsprites-dataset/blob/master/dsprites_reloading_example.ipynb
         """
         #if dsprites:
+
         if dataset.lat_sizes.size == 5 and not self.all_latents:
+            
             y = np.random.randint(1, dataset.lat_sizes.size, size=1)
         else:
             y = np.random.randint(dataset.lat_sizes.size, size=1)

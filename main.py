@@ -6,7 +6,9 @@ import random
 import sys
 
 
-from models.betaVAE import *
+from models.betaVAEHiggins import *
+from models.betaVAEConv import *
+from models.betaVAEBurgess import *
 from datasets import *
 from training import Trainer
 from evaluate import Evaluator
@@ -14,7 +16,8 @@ from evaluate import Evaluator
 import wandb
 
 CONFIG_FILE = "hyperparam.ini"
-              
+
+
 def parse_arguments(args_to_parse):
     """Parse the command line arguments.
 
@@ -59,14 +62,24 @@ def parse_arguments(args_to_parse):
         help='Whether to drop UMAP/TSNE etc. for computing Higgins metric (if we do not drop them, generating the data takes ~25 hours)')      
     training.add_argument('--dataset_size', type=int, default=1000,
         help='Whether to drop UMAP/TSNE etc. for computing Higgins metric (if we do not drop them, generating the data takes ~25 hours)')      
-    training.add_argument('--all_latents', type=bool, default=False,
+    training.add_argument('--all_latents', type=lambda x: False if x in ["False", "false", "", "None", "0"] else True, default=0,
         help='Whether to use 5 or 4 latents in Dsprites')      
-    training.add_argument('--beta', type=float, default=1.,
-        help='beta factor for loss')     
+    training.add_argument('--loss-b', type=float, default=1.,
+        help='beta factor for loss')
+
+    model = parser.add_argument_group('Model specfic options')
+    model.add_argument('-m', '--model-type',
+                       default='BetaVAEHiggins', choices=['BetaVAEHiggins', 'BetaVAEConv', 'BetaVAEBurgess'],
+                       help='Type of encoder and decoder to use.')
+    model.add_argument('-z', '--latent-dim', type=int,
+                      default = 10,
+                       help='Dimension of the latent variable.')
 
     args = parser.parse_args(args_to_parse)
 
     return args
+
+
 
 def main(args):
 
@@ -95,11 +108,12 @@ def main(args):
 
     train_loader, test_loader = get_dataloaders("dsprites",
                                        batch_size=args.batch_size, shuffle=True)
-    
-    beta = args.beta
+    img_size = train_loader.dataset.img_size
+    beta = args.loss_b
     print(beta)
-    model = BetaVAE(10, beta=beta) 
-
+    model = eval("{model}({latent_dim}, {beta}, {img_size}, latent_dist = 'bernoulli')".format(model = args.model_type, latent_dim = args.latent_dim, beta = beta, img_size = img_size))
+    print(model)
+   
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     model = model.to(device)
     optimizer = optim.Adagrad(model.parameters(), lr=args.lr)
@@ -109,7 +123,7 @@ def main(args):
     print("training")
     trainer(train_loader, epochs=args.epochs)
 
-                                                                                                                  
+                                                                                                                
     evaluator = Evaluator(model, device=device, sample_size = args.sample_size, dataset_size = args.dataset_size, all_latents= args.all_latents, use_wandb = args.wandb_log)
 
     metrics = evaluator(test_loader)
