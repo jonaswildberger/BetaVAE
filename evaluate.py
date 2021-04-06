@@ -90,7 +90,7 @@ class Evaluator():
                 if total_len > max_len:
                     break
 
-            #fid = get_fid_value(torch.utils.data.DataLoader(torch.utils.data.TensorDataset(torch.cat(small_dset_x), torch.cat(small_dset_y)), batch_size=dataloader.batch_size, shuffle=False), self.model)
+            fid = get_fid_value(torch.utils.data.DataLoader(torch.utils.data.TensorDataset(torch.cat(small_dset_x), torch.cat(small_dset_y)), batch_size=dataloader.batch_size, shuffle=False), self.model)
             
         if dataset_name in ['dsprites', 'mpi3dtoy', '3dshapes']: 
             self.logger.info("Computing the disentanglement metric")
