@@ -5,18 +5,19 @@ from torch.nn import functional as F
 from .types_ import *
 
 
-class BetaVAE(BaseVAE):
+class BetaVAEHiggins(BaseVAE):
 
     num_iter = 0
     def __init__(self,
-                latent_dim,
+                latent_dim = 10,
                 beta = 1,
-                loss_type = 'H'):
-        super(BetaVAE, self).__init__()
+                img_size = (1, 64, 64),
+                latent_dist = 'bernoulli'):
+        super(BetaVAEHiggins, self).__init__()
 
         self.latent_dim = latent_dim
         self.beta = beta
-        self.loss_type = loss_type
+        self.latent_dist = latent_dist
 
         input_dim = 4096
 
@@ -36,7 +37,7 @@ class BetaVAE(BaseVAE):
         result = torch.relu(self.line1(input))
         result = torch.relu(self.line2(result))
         mu_logvar = self.mu_logvar_gen(result)
-        mu, logvar = mu, logvar = mu_logvar.view(-1, self.latent_dim, 2).unbind(-1)
+        mu, logvar = mu_logvar.view(-1, self.latent_dim, 2).unbind(-1)
 
         return mu, logvar
 
@@ -46,7 +47,7 @@ class BetaVAE(BaseVAE):
         x = torch.tanh(self.lind1(input))
         x = torch.tanh(self.lind2(x))
         x = torch.tanh(self.lind3(x))
-        x = torch.sigmoid(self.lind4(x))# Sigmoid because the distribution over pixels is supposed to be Bernoulli
+        x = torch.sigmoid(self.lind4(x)).reshape((batch_size, 1, 64, 64))# Sigmoid because the distribution over pixels is supposed to be Bernoulli
         return x
 
     def reparameterize(self, mu, logvar):
@@ -62,13 +63,15 @@ class BetaVAE(BaseVAE):
     def loss_function(self, recon, x, mu, log_var):
         self.num_iter += 1
         batch_size = x.size(0)
-        recon_loss =F.binary_cross_entropy(recon, x.view(batch_size, 4096), reduction='sum')
+        if self.latent_dist == 'bernoulli':
+            recon_loss =F.binary_cross_entropy(recon, x, reduction='sum')
+        elif self.latent_dist  == "gaussian":
+        # loss in [0,255] space but normalized by 255 to not be too big
+            recon_loss = F.mse_loss(recon * 255, x * 255, reduction="sum") / 255
         kld_loss = -0.5 * torch.sum(1 + log_var - mu ** 2 - log_var.exp())
 
         
-        loss = (recon_loss + self.beta  * kld_loss)/batch_size
-
-        
+        loss = recon_loss + self.beta  * kld_loss
         return loss
 
     #smaple form latent sapce

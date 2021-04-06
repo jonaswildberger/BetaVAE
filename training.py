@@ -34,7 +34,7 @@ class Trainer():
                     self.optimizer.zero_grad()
                     recon_batch, mu, logvar = self.model(data)
 
-                    loss = self.model.loss_function(recon_batch, data, mu,logvar)
+                    loss = self.model.loss_function(recon_batch, data, mu,logvar)/len(data)
 
                     
                     loss.backward()
