@@ -29,7 +29,6 @@ DATASETS_DICT = {"mnist": "MNIST",
 
 DATASETS = list(DATASETS_DICT.keys())
 
-
 def get_dataset(dataset):
     """Return the correct dataset."""
     dataset = dataset.lower()
@@ -71,9 +70,10 @@ def get_dataloaders(dataset, root=None, shuffle=True, pin_memory=True,
 
     return DataLoader(dataset,
                       batch_size=batch_size,
-                      shuffle=shuffle,
+                      shuffle=True,
                       pin_memory=pin_memory,
                       **kwargs), dataset
+
 
 
 

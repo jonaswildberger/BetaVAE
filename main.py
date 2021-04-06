@@ -268,7 +268,7 @@ def main(args):
         gc.collect()
 
     if args.is_metrics:
-        logger.info("Evaluatiopn time :)")
+        logger.info("Evaluation time :)")
         test_loader, raw_dataset = get_dataloaders(args.dataset,
                                         batch_size=args.batch_size, shuffle=True)
 

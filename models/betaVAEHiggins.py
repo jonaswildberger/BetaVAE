@@ -74,7 +74,7 @@ class BetaVAEHiggins(BaseVAE):
         latent_kl = -0.5 * (1 + log_var - mu ** 2 - log_var.exp()).sum(dim=0)
         kld_loss = torch.sum(latent_kl)
 
-        
+      
         loss = recon_loss + self.beta  * kld_loss
 
         if storer is not None:
