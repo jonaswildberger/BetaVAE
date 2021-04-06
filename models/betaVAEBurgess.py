@@ -6,7 +6,7 @@ from .types_ import *
 import numpy as np
 
 class BetaVAEBurgess(BaseVAE):
-
+    model_type = "BetaVAEBurgess"
     num_iter = 0
     def __init__(self,
                 latent_dim,

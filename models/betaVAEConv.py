@@ -7,7 +7,7 @@ import numpy as np
 
 
 class BetaVAEConv(BaseVAE):
-
+    model_type = "BetaVAEConv"
     num_iter = 0
     def __init__(self, 
                  latent_dim=10,

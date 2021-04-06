@@ -1,0 +1,15 @@
+torch
+torchvision
+matplotlib
+scipy
+imageio
+scikit-image
+pandas
+seaborn
+Pillow
+tqdm
+sklearn
+umap-learn
+opentsne
+wandb
+h5py
