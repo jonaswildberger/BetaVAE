@@ -67,6 +67,7 @@ def _get_activations(dataloader, length, model, batch_size, dims, device='cuda' 
         batch = batch.to(device)
 
         with torch.no_grad():
+            batch = batch.float()
             pred = model(batch)[0]
 
         # If model output is not scalar, apply global spatial average pooling.
@@ -160,31 +161,69 @@ def get_fid_value(dataloader, vae_model, batch_size = 128):
     model = INCEPTION_V3
 
     # calculated reconstructed data using VAE
-    vae_output = []
-    vae_label = []
+#     vae_output = []
+#     vae_label = []
     vae_model.eval()
     device='cuda' if torch.cuda.is_available() else 'cpu'
-    device = 'cpu' # Override for now
+#    device = 'cpu' # Override for now
     vae_model = vae_model.to(device)
     
-    original_input = []
-    original_label = []
+#     original_input = []
+#     original_label = []
     
-    print("Running VAE model.")
+#     print("Running VAE model.")
+#     for inputs, labels in dataloader:
+#         inputs = inputs.to(device)
+#         with torch.no_grad():
+#             outputs = vae_model(inputs)[0]
+#         for i in range(outputs.shape[0]):
+#             vae_output.append(outputs[i])
+#             original_input.append(inputs[i])
+#             vae_label.append(labels[i])
+#             original_label.append(labels[i])
+#     original_input = torch.stack(original_input)
+#     original_label = torch.stack(original_label)
+#     vae_output = torch.stack(vae_output)
+#     vae_label = torch.stack(vae_label)
+#     print(vae_output.shape)
+
     for inputs, labels in dataloader:
+        shapeI = list(inputs[0].shape)
+        shapeL = list(labels[0].shape)
+        break
+    
+
+    shapeI.insert(0, batch_size)
+    shapeL.insert(0, batch_size)
+
+    original_input = np.empty(shapeI)
+    original_label = np.empty(shapeL)
+    vae_output = np.empty(shapeI)
+    
+    count = 0
+    print("Running VAE model on device", device)
+    for inputs, labels in dataloader:
+        
         inputs = inputs.to(device)
-        outputs = vae_model(inputs)[0]
-        for i in range(outputs.shape[0]): #why do we have two separate loops for outputs and labels?
-            vae_output.append(outputs[i])
-            original_input.append(inputs[i])
-        for i in range(labels.shape[0]):
-            vae_label.append(labels[i])
-            original_label.append(labels[i])
-    original_input = torch.stack(original_input)
-    original_label = torch.stack(original_label)
-    vae_output = torch.stack(vae_output)
-    vae_label = torch.stack(vae_label)
-    print(vae_output.shape)
+        with torch.no_grad():
+            outputs = vae_model(inputs)[0]
+               
+        if count != 0: # if not first batch then just append by concatenation
+            original_input = np.concatenate((original_input, inputs.cpu().detach().numpy()), axis=0)
+            original_label = np.concatenate((original_label, labels.cpu().detach().numpy()), axis=0)
+            vae_output = np.concatenate((vae_output, outputs.cpu().detach().numpy()), axis=0)
+        else:
+            original_input[:original_input.shape[0]] = inputs.cpu().detach().numpy()
+            original_label[:original_input.shape[0]] = labels.cpu().detach().numpy()
+            vae_output[:original_input.shape[0]] = outputs.cpu().detach().numpy()
+        
+        count = count + 1
+    
+    original_input = torch.from_numpy(original_input)
+    original_label = torch.from_numpy(original_label)
+    vae_output = torch.from_numpy(vae_output)
+    vae_label = original_label
+    print("Tensor shape:", vae_output.shape)
     
     print("Outputs calculated. Constructing dataloader.")
 
@@ -197,7 +236,7 @@ def get_fid_value(dataloader, vae_model, batch_size = 128):
     
     dataset_reconstructed = CustomTensorDataset(tensors=(vae_output, vae_label), transform = Transform)
     dataloader_reconstructed = DataLoader(dataset_reconstructed, batch_size=batch_size, sampler=sampler)
-    print("dataloader_reconstructed built")
+    print("dataloader_reconstructed built. Shape is ", dataset_reconstructed[1][0].shape)
     #print(dataset_reconstructed[1][0].shape)
 
     # get the model dimensions
@@ -238,12 +277,7 @@ if __name__ == "__main__":
 
     mode = sys.argv[1] # get the name of the dataset you want to measure FID for
     
-    if mode == 'cifar10'  or mode == 'cifar100' or mode == 'mnist':
-        # Get the dataset
-        dataloader1 = get_dataloaders(mode, batch_size=128)[0]
-    else:
-        print("Entered wrong name for dataset") 
-        sys.exit()
+    dataloader1 = get_dataloaders(mode, batch_size=128)[0]
 
     fid_value = get_fid_value(dataloader1, vae_model)
 
