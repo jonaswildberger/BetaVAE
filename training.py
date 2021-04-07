@@ -39,10 +39,19 @@ class Trainer():
 
 
     def __call__(self, data_loader, epochs=10, checkpoint_every = 10, wandb_log = False):
+        start = default_timer()
+        storers = []
         self.model.train()
-        for epoch in range(epochs):
 
+
+        if wandb_log:
+            train_evaluator = Evaluator(model=self.model, device=self.device, seed=self.seed,
+                                        sample_size=self.sample_size, dataset_size=self.dataset_size, all_latents=self.all_latents)
+
+        for epoch in range(epochs):
+            storer = defaultdict(list)
             epoch_loss = 0
+
             kwargs = dict(desc="Epoch {}".format(epoch + 1), leave=False,
                       disable=False)
             with trange(len(data_loader), **kwargs) as t:
@@ -55,7 +64,7 @@ class Trainer():
                     self.optimizer.zero_grad()
                     recon_batch, mu, logvar = self.model(data)
 
-                    loss = self.model.loss_function(recon_batch, data, mu,logvar)/len(data)
+                    loss = self.model.loss_function(recon_batch, data, mu,logvar, storer=storer)/len(data)
 
                     
                     loss.backward()
@@ -66,7 +75,41 @@ class Trainer():
                     t.update()
 
             mean_epoch_loss = epoch_loss / len(data_loader)
-            print('Epoch: {} Average loss per image: {:.2f}'.format(epoch + 1,mean_epoch_loss))
+
+            self.logger.info('Epoch: {} Average loss per image: {:.2f}'.format(epoch + 1,
+                                                                               mean_epoch_loss))
+
+            self.losses_logger.log(epoch, storer)
+  
+            if self.gif_visualizer is not None:
+                self.gif_visualizer()
+
+            if epoch % checkpoint_every == 0:
+                save_model(self.model,self.save_dir,
+                           filename="model-{}.pt".format(epoch))
+
+            if self.scheduler is not None:
+                self.scheduler.step()
+
+            self.model.eval()
+
+            if wandb_log:
+                metrics= {}
+                print("test")
+                if epoch % max(round(epochs/abs(self.metrics_freq)), 10) == 0 and abs(epoch-epochs) >= 5 and (epoch != 0 if self.metrics_freq < 0 else True):
+                    metrics = train_evaluator.compute_metrics(data_loader)
+                losses = train_evaluator.compute_losses(data_loader)
+                wandb.log({"epoch":epoch,"metric":metrics, "loss":losses})
+
+            self.model.train()           
+
+        if self.gif_visualizer is not None:
+            self.gif_visualizer.save_reset()
+
+        self.model.eval()
+
+        delta_time = (default_timer() - start) / 60
+        self.logger.info('Finished training after {:.1f} min.'.format(delta_time))
 
 
 
