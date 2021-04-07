@@ -68,7 +68,7 @@ class Evaluator():
             data = data.to(self.device)
 
             recon_batch, mu, logvar = self.model(data)
-            _ = self.model.loss_function(recon_batch, data, mu, logvar)
+            _ = self.model.loss_function(recon_batch, data, mu, logvar, storer=storer)
             
         losses = {k: sum(v) / len(dataloader) for k, v in storer.items()}
         self.model.train()
