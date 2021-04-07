@@ -78,7 +78,7 @@ class Evaluator():
         
         accuracies, aam, mig, fid = None, None, None, None
         #TODO: dont run if on collab
-        '''
+        
         if dataset_name != '3dshapes' and dataset_name != 'mpi3dtoy' and dataset_name != 'dsprites': #takes way too long for these too currently even for smaller sets
             total_len = 0
             max_len = 50000
@@ -92,7 +92,7 @@ class Evaluator():
                     break
 
             fid = get_fid_value(torch.utils.data.DataLoader(torch.utils.data.TensorDataset(torch.cat(small_dset_x), torch.cat(small_dset_y)), batch_size=dataloader.batch_size, shuffle=False), self.model)
-        '''    
+        
         if dataset_name in ['dsprites', 'mpi3dtoy', '3dshapes']: 
             self.logger.info("Computing the disentanglement metric")
             method_names = ["VAE", "PCA", "ICA", "T-SNE","UMAP", "DensUMAP"]

@@ -21,7 +21,7 @@ class Trainer():
     def __init__(self, model, optimizer, scheduler = None, device=torch.device("cpu"),
                 logger=logging.getLogger(__name__), metrics_freq =-2, sample_size = 64,
                 save_dir ="results",
-                dataset_size = 1000, all_latents = True, gif_visualizer = None, seed = None):
+                dataset_size = 1000, all_latents = True, gif_visualizer = None, seed = None, dataset_name = None):
         self.device = device
         self.model = model.to(self.device)
         self.optimizer = optimizer
@@ -35,6 +35,7 @@ class Trainer():
         self.all_latents = all_latents
         self.gif_visualizer = gif_visualizer
         self.seed = seed
+        self.dataset_name = dataset_name
 
 
 
@@ -96,7 +97,7 @@ class Trainer():
             if wandb_log:
                 metrics= {}
                 if epoch % max(round(epochs/abs(self.metrics_freq)), 10) == 0 and abs(epoch-epochs) >= 5 and (epoch != 0 if self.metrics_freq < 0 else True):
-                    metrics = train_evaluator.compute_metrics(data_loader)
+                    metrics = train_evaluator.compute_metrics(data_loader, self.dataset_name)
                 losses = train_evaluator.compute_losses(data_loader)
                 wandb.log({"epoch":epoch,"metric":metrics, "loss":losses})
 

@@ -182,7 +182,7 @@ def main(args):
         gif_visualizer = GifTraversalsTraining(model, args.dataset, exp_dir)
 
         trainer = Trainer(model, optimizer,  scheduler = scheduler, device = device, logger = logger, gif_visualizer=gif_visualizer, metrics_freq=args.metrics_freq,
-                        sample_size=args.sample_size, save_dir = exp_dir, dataset_size=args.dataset_size, all_latents=args.all_latents, seed=args.seed)
+                        sample_size=args.sample_size, save_dir = exp_dir, dataset_size=args.dataset_size, all_latents=args.all_latents, seed=args.seed, dataset_name = args.dataset)
 
 
         trainer(train_loader, epochs=args.epochs, wandb_log= args.wandb_log)
