@@ -78,7 +78,7 @@ class Evaluator():
         
         accuracies, aam, mig, fid = None, None, None, None
         #TODO: dont run if on collab
-        if dataset_name != '3dshapes' and dataset_name != 'mpi3dtoy': #takes way too long for these too currently even for smaller sets
+        if dataset_name != '3dshapes' and dataset_name != 'mpi3dtoy' and dataset_name != 'dsprites': #takes way too long for these too currently even for smaller sets
             total_len = 0
             max_len = 50000
             small_dset_x = []
