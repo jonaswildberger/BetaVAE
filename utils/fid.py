@@ -21,6 +21,7 @@ from utils.datasets import get_dataloaders, get_img_size, DATASETS
 from torch.utils.data import Dataset, TensorDataset, DataLoader
 
 import utils.inception
+from tqdm import tqdm
 
 INCEPTION_V3 = utils.inception.get_inception_v3()
 FID_EVAL_SIZE = 100000 # massive, code will train on full dataset
@@ -63,7 +64,7 @@ def _get_activations(dataloader, length, model, batch_size, dims, device='cuda' 
 
     start_idx = 0
 
-    for batch, labels in (dataloader):
+    for batch, labels in tqdm(dataloader):
         batch = batch.to(device)
 
         with torch.no_grad():
@@ -202,7 +203,7 @@ def get_fid_value(dataloader, vae_model, batch_size = 128):
     
     count = 0
     print("Running VAE model on device", device)
-    for inputs, labels in dataloader:
+    for inputs, labels in tqdm(dataloader):
         
         inputs = inputs.to(device)
         with torch.no_grad():
