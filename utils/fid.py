@@ -64,7 +64,7 @@ def _get_activations(dataloader, length, model, batch_size, dims, device='cuda' 
 
     start_idx = 0
 
-    for batch, labels in tqdm(dataloader):
+    for batch, labels in tqdm(dataloader, desc="Evaluating InceptionV3"):
         batch = batch.to(device)
 
         with torch.no_grad():
@@ -203,7 +203,7 @@ def get_fid_value(dataloader, vae_model, batch_size = 128):
     
     count = 0
     print("Running VAE model on device", device)
-    for inputs, labels in tqdm(dataloader):
+    for inputs, labels in tqdm(dataloader, desc="Evaluating VAE"):
         
         inputs = inputs.to(device)
         with torch.no_grad():
