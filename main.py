@@ -189,7 +189,10 @@ def main(args):
 
         latents_plots, traversal_plots, cluster_score = {}, {}, {}
          
-        latents_plots, latent_data, dim_reduction_models = latent_viz(model, train_loader, args.dataset, raw_dataset=raw_dataset, steps=100, device=device)
+        try:
+            latents_plots, latent_data, dim_reduction_models = latent_viz(model, train_loader, args.dataset, raw_dataset=raw_dataset, steps=100, device=device)
+        except:
+            print("Failed to run latent viz code")
     
         viz = Visualizer(model=model,
                     model_dir=exp_dir,

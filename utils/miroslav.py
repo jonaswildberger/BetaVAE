@@ -89,7 +89,8 @@ def latent_viz(model, loader, dataset_name, raw_dataset, steps=100, device='cuda
         n_classes = 6
     elif dataset_name in ["mpi3dtoy"]:
         n_classes = 7
-
+    elif dataset_name in ['cifar100']:
+        n_classes = 100
 
     if method == "all":
         method = ["tsne", "densumap", "pca"]
