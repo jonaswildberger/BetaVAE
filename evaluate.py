@@ -55,7 +55,7 @@ class Evaluator():
         return metrics
 
 
-    def compute_losses(self, dataloader):
+    def compute_losses(self, dataloader, batch_size=1):
         """Compute all test losses.
 
         Parameters
@@ -70,7 +70,7 @@ class Evaluator():
             recon_batch, mu, logvar = self.model(data)
             _ = self.model.loss_function(recon_batch, data, mu, logvar, storer=storer)
             
-        losses = {k: sum(v) / len(dataloader) for k, v in storer.items()}
+        losses = {k: sum(v) / len(dataloader)/batch_size for k, v in storer.items()}
         self.model.train()
         return losses
 

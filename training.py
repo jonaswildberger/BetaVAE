@@ -98,7 +98,7 @@ class Trainer():
                 metrics= {}
                 if epoch % max(round(epochs/abs(self.metrics_freq)), 10) == 0 and abs(epoch-epochs) >= 5 and (epoch != 0 if self.metrics_freq < 0 else True):
                     metrics = train_evaluator.compute_metrics(data_loader, self.dataset_name)
-                losses = train_evaluator.compute_losses(data_loader)
+                losses = train_evaluator.compute_losses(data_loader, batch_size=batch_size)
                 wandb.log({"epoch":epoch,"metric":metrics, "loss":losses})
 
             self.model.train()           
