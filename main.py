@@ -187,7 +187,7 @@ def main(args):
 
         trainer(train_loader, epochs=args.epochs, wandb_log= args.wandb_log)
 
-        latents_plots, traversal_plots, cluster_score = {}, {}, {}
+        latents_plots, traversal_plots, dim_reduction_models = {}, {}, {}
          
         try:
             latents_plots, latent_data, dim_reduction_models = latent_viz(model, train_loader, args.dataset, raw_dataset=raw_dataset, steps=100, device=device)
@@ -255,7 +255,7 @@ def main(args):
                 print(f"Failed to convert {k}")
 
         if args.wandb_log:
-            wandb.log({"latents":latents_plots, "latent_traversal":traversal_plots, "cluster_metric":cluster_score, "builtin_plots":converted_imgs})
+            wandb.log({"latents":latents_plots, "latent_traversal":traversal_plots, "builtin_plots":converted_imgs})
             for fname in plot_fnames:
                 try:
                     wandb.save(fname)
