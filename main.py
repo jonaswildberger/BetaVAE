@@ -177,7 +177,7 @@ def main(args):
             optimizer = optim.Adagrad(model.parameters(), lr=args.lr)
         elif args.model_type == "BetaVAEBurgess":
             optimizer = optim.Adam(model.parameters(), lr=args.lr)
-            scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=30, gamma=0.2)
+            scheduler = optim.lr_scheduler.StepLR(optimizer, step_size=round(args.epochs*0.75), gamma=0.2)
         
         gif_visualizer = GifTraversalsTraining(model, args.dataset, exp_dir)
 
