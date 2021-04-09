@@ -134,7 +134,7 @@ class Evaluator():
                     imgs_pca = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[3]*data_imgs.shape[1]**2))
                 else: 
                     imgs_pca = np.reshape(dataset.imgs, (dataset.imgs.shape[0], dataset.imgs.shape[1]**2))
-                size = min(3000 if data_imgs.shape[3] > 1 else 25000, len(imgs_pca))
+                size = min(3500 if data_imgs.shape[3] > 1 else 25000, len(imgs_pca))
 
                 idx = np.random.randint(len(imgs_pca), size = size)
                 imgs_pca = imgs_pca[idx, :]       #not enough memory for full dataset -> repeat with random subsets               
