@@ -129,11 +129,11 @@ class Evaluator():
                 print("Training PCA...")
                 pca = decomposition.PCA(n_components=self.model.latent_dim, whiten = True, random_state=self.seed)
                 if dataset.imgs.ndim == 4:
-                    data_imgs = dataset.imgs[:,:,:,0]
-                    imgs_pca = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[1]**2))
+                    data_imgs = dataset.imgs[:,:,:,:]
+                    imgs_pca = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[3]*data_imgs.shape[1]**2))
                 else: 
                     imgs_pca = np.reshape(dataset.imgs, (dataset.imgs.shape[0], dataset.imgs.shape[1]**2))
-                size = min(50000, len(imgs_pca))
+                size = min(15000, len(imgs_pca))
 
                 idx = np.random.randint(len(imgs_pca), size = size)
                 imgs_pca = imgs_pca[idx, :]       #not enough memory for full dataset -> repeat with random subsets               
@@ -149,11 +149,11 @@ class Evaluator():
                 print("Training ICA...")
                 ica = decomposition.FastICA(n_components=self.model.latent_dim, max_iter=400, random_state=self.seed)
                 if dataset.imgs.ndim == 4:
-                    data_imgs = dataset.imgs[:,:,:,0]
-                    imgs_ica = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[1]**2))
+                    data_imgs = dataset.imgs[:,:,:,:]
+                    imgs_ica = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[3]*data_imgs.shape[1]**2))
                 else:
                     imgs_ica = np.reshape(dataset.imgs, (dataset.imgs.shape[0], dataset.imgs.shape[1]**2))
-                size = min(1000, len(imgs_ica))
+                size = min(2000, len(imgs_ica))
                 idx = np.random.randint(len(imgs_ica), size = size)
                 imgs_ica = imgs_ica[idx, :]       #not enough memory for full dataset -> repeat with random subsets 
                 ica.fit(imgs_ica)
