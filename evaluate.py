@@ -130,6 +130,7 @@ class Evaluator():
                 pca = decomposition.PCA(n_components=self.model.latent_dim, whiten = True, random_state=self.seed)
                 if dataset.imgs.ndim == 4:
                     data_imgs = dataset.imgs[:,:,:,:]
+                    print(f"Shape of data images: {data_imgs.shape}")
                     imgs_pca = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[3]*data_imgs.shape[1]**2))
                 else: 
                     imgs_pca = np.reshape(dataset.imgs, (dataset.imgs.shape[0], dataset.imgs.shape[1]**2))
@@ -150,6 +151,7 @@ class Evaluator():
                 ica = decomposition.FastICA(n_components=self.model.latent_dim, max_iter=400, random_state=self.seed)
                 if dataset.imgs.ndim == 4:
                     data_imgs = dataset.imgs[:,:,:,:]
+                    print(f"Shape of data images: {data_imgs.shape}")
                     imgs_ica = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[3]*data_imgs.shape[1]**2))
                 else:
                     imgs_ica = np.reshape(dataset.imgs, (dataset.imgs.shape[0], dataset.imgs.shape[1]**2))
