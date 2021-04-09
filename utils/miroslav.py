@@ -79,7 +79,7 @@ def star_shape(dset):
     return traversals
 
 
-def latent_viz(model, loader, dataset_name, raw_dataset, steps=100, device='cuda' if torch.cuda.is_available() else 'cpu', method="all", seed=1):
+def latent_viz(model, loader, dataset_name, raw_dataset, steps=75, device='cuda' if torch.cuda.is_available() else 'cpu', method="all", seed=1):
 
     if dataset_name in ["mnist", "fashion", "cifar10", "celeba"]:
         n_classes = 10
@@ -101,17 +101,20 @@ def latent_viz(model, loader, dataset_name, raw_dataset, steps=100, device='cuda
     post_means = [[] for _ in range(n_classes)]
     post_logvars = [[] for _ in range(n_classes)]
     post_samples = [[] for _ in range(n_classes)]
-
+    max_len = 7500
+    cur_len = 0
     # Data for training embeddings
     with torch.no_grad():
         model.eval()
+        
         for step, (x,y) in tqdm(enumerate(loader), desc = "Gathering data for training embeddings"):
             post_mean, post_logvar = model.encode(x.to(device))
             samples = model.reparameterize(post_mean, post_logvar)
-            if step >= steps:
+            cur_len = cur_len + len(x)
+            if step >= steps or cur_len > max_len:
                 break
             for idx in range(len(y)):
-                proper_slot = y[idx].item() if dataset_name != "dsprites" and dataset_name !="3dshapes" and dataset_name != "mpi3dtopy" else 0
+                proper_slot = y[idx].item() if dataset_name != "dsprites" and dataset_name !="3dshapes" and dataset_name != "mpi3dtoy" else 0
                 class_samples[proper_slot].append(x[idx])
                 post_means[proper_slot].append(post_mean[idx])
                 post_logvars[proper_slot].append(post_logvar[idx])
