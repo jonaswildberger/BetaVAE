@@ -363,8 +363,8 @@ class Evaluator():
                 pca = methods[method]
                 #flatten images
                 if dataset.imgs.ndim == 4:
-                    imgs_sampled_pca1 = torch.reshape(imgs_sampled1[:,0,:,:], (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
-                    imgs_sampled_pca2 = torch.reshape(imgs_sampled2[:,0,:,:], (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
+                    imgs_sampled_pca1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[1]*imgs_sampled1.shape[2]**2))
+                    imgs_sampled_pca2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[1]*imgs_sampled2.shape[2]**2))
                 else:
                     imgs_sampled_pca1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
                     imgs_sampled_pca2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
@@ -376,8 +376,8 @@ class Evaluator():
                 ica = methods[method]
                 #flatten images
                 if dataset.imgs.ndim == 4:
-                    imgs_sampled_ica1 = torch.reshape(imgs_sampled1[:,0,:,:], (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
-                    imgs_sampled_ica2 = torch.reshape(imgs_sampled2[:,0,:,:], (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
+                    imgs_sampled_ica1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[1]*imgs_sampled1.shape[2]**2))
+                    imgs_sampled_ica2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[1]*imgs_sampled2.shape[2]**2))
                 else:   
                    imgs_sampled_ica1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
                    imgs_sampled_ica2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
@@ -403,8 +403,8 @@ class Evaluator():
                     imgs_sampled1 = imgs_sampled1[0:100]
                     imgs_sampled2 = imgs_sampled2[0:100]
                     if dataset.imgs.ndim == 4:
-                        imgs_sampled_umap1 = torch.reshape(imgs_sampled1[:,0,:,:], (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
-                        imgs_sampled_umap2 = torch.reshape(imgs_sampled2[:,0,:,:], (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
+                        imgs_sampled_umap1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[1]*imgs_sampled1.shape[2]**2))
+                        imgs_sampled_umap2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[1]*imgs_sampled2.shape[2]**2))
                     else:   
                         imgs_sampled_umap1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
                         imgs_sampled_umap2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
