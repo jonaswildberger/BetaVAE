@@ -101,7 +101,7 @@ def latent_viz(model, loader, dataset_name, raw_dataset, steps=75, device='cuda'
     post_means = [[] for _ in range(n_classes)]
     post_logvars = [[] for _ in range(n_classes)]
     post_samples = [[] for _ in range(n_classes)]
-    max_len = 7500
+    max_len = 5000
     cur_len = 0
     # Data for training embeddings
     with torch.no_grad():

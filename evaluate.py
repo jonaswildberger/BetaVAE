@@ -134,7 +134,7 @@ class Evaluator():
                     imgs_pca = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[3]*data_imgs.shape[1]**2))
                 else: 
                     imgs_pca = np.reshape(dataset.imgs, (dataset.imgs.shape[0], dataset.imgs.shape[1]**2))
-                size = min(10000, len(imgs_pca))
+                size = min(5000 if data_imgs.shape[3] > 1 else 25000, len(imgs_pca))
 
                 idx = np.random.randint(len(imgs_pca), size = size)
                 imgs_pca = imgs_pca[idx, :]       #not enough memory for full dataset -> repeat with random subsets               
@@ -155,7 +155,7 @@ class Evaluator():
                     imgs_ica = np.reshape(data_imgs, (data_imgs.shape[0], data_imgs.shape[3]*data_imgs.shape[1]**2))
                 else:
                     imgs_ica = np.reshape(dataset.imgs, (dataset.imgs.shape[0], dataset.imgs.shape[1]**2))
-                size = min(2000, len(imgs_ica))
+                size = min(1000 if data_imgs.shape[3] > 1 else 2500, len(imgs_ica))
                 idx = np.random.randint(len(imgs_ica), size = size)
                 imgs_ica = imgs_ica[idx, :]       #not enough memory for full dataset -> repeat with random subsets 
                 ica.fit(imgs_ica)
