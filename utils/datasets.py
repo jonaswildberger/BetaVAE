@@ -27,7 +27,9 @@ DATASETS_DICT = {"mnist": "MNIST",
                  "celeba": "CelebA",
                  "chairs": "Chairs",
                  "cifar10": "CIFAR10",
-                 "cifar100": "CIFAR100"}
+                 "cifar100": "CIFAR100",
+                 "3dshapes":"Shapes3D",
+                 "mpi3dtoy":"MPI3DToy"}
 
 DATASETS = list(DATASETS_DICT.keys())
 
