@@ -161,7 +161,7 @@ def main(args):
 
         create_safe_directory(exp_dir, logger=logger)
 
-        train_loader, raw_dataset = get_dataloaders(args.dataset,
+        train_loader, raw_dataset, viz_loader, test_loader = get_dataloaders(args.dataset,
                                         batch_size=args.batch_size, shuffle=False)
         logger.info("Train {} with {} samples".format(args.dataset, len(train_loader.dataset)))
         img_size = train_loader.dataset.img_size
@@ -212,7 +212,7 @@ def main(args):
         size = (args.n_rows, args.n_cols)
         # same samples for all plots: sample max then take first `x`data  for all plots
         num_samples = args.n_cols * args.n_rows
-        samples = get_samples(args.dataset, num_samples, idcs=args.idcs)
+        samples = get_samples(viz_loader, num_samples, idcs=args.idcs)
 
         if "all" in args.plots:
             args.plots = [p for p in PLOT_TYPES if p != "all"]
@@ -265,7 +265,6 @@ def main(args):
                     print(f"Failed to save {fname} to WANDB. Exception: {e}")
         
 
-
         # SAVE MODEL AND EXPERIMENT INFORMATION
         save_model(trainer.model, exp_dir, metadata=vars(args))
         #free RAM from train loader so test loader can be loaded
@@ -274,8 +273,6 @@ def main(args):
 
     if args.is_metrics:
         logger.info("Evaluation time :)")
-        test_loader, raw_dataset = get_dataloaders(args.dataset,
-                                        batch_size=args.batch_size, shuffle=True)
 
         model.eval()
         evaluator = Evaluator(model, device=device, sample_size = args.sample_size, dataset_size = args.dataset_size, all_latents= args.all_latents, use_wandb = args.wandb_log, seed=args.seed)
