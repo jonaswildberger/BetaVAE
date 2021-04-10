@@ -22,17 +22,18 @@ import matplotlib.pyplot as plt
 class Evaluator():
 
     def __init__(self, model, device=torch.device("cpu"), sample_size=64,
-                 dataset_size=1000,  logger=logging.getLogger(__name__), all_latents = False, use_NN_classifier = False, use_wandb = True, seed = None, higgins_drop_slow = True):
+                 dataset_size=1000,  logger=logging.getLogger(__name__), all_latents = False, use_NN_classifier = False, use_wandb = True, seed = None, higgins_drop_slow = True, multiple_l=False):
         self.sample_size = sample_size
         self.use_wandb = use_wandb
         self.dataset_size = dataset_size
         self.device = device
         self.all_latents = all_latents
-        self.use_NN_classifier = use_NN_classifier = False
+        self.use_NN_classifier = False
         self.model = model.to(self.device)
         self.seed = seed
         self.logger = logger
         self.higgins_drop_slow = higgins_drop_slow
+        self.multiple_l = multiple_l
 
     def __call__(self, data_loader, dataset_name = None):
         start = default_timer()
@@ -85,27 +86,49 @@ class Evaluator():
         if dataset_name in ['dsprites', 'mpi3dtoy', '3dshapes']: 
             self.logger.info("Computing the disentanglement metric")
             method_names = ["VAE", "PCA", "ICA", "T-SNE","UMAP", "DensUMAP"]
-            accuracies = self._disentanglement_metric(dataloader.dataset, method_names, sample_size=self.sample_size, n_epochs = 10000, dataset_size=self.dataset_size)
-        
+            if self.multiple_l is False:
+                accuracies = self._disentanglement_metric(dataloader.dataset, method_names, sample_size=self.sample_size, n_epochs = 10000, dataset_size=self.dataset_size)
+            else:
+                Ls = [16,64,128,256]
+                accuracies = {"L"+sample_size: self._disentanglement_metric(dataloader.dataset, method_names, sample_size=self.sample_size, 
+                    n_epochs = 10000, dataset_size=self.dataset_size) for sample_size in Ls}
+
         if self.use_wandb:
                 # wandb.log(accuracies)
             wandb.save("disentanglement_metrics.h5")
-        '''
-        self.logger.info("Computing the empirical distribution q(z|x).")
-        samples_zCx, params_zCx = self._compute_q_zCx(dataloader)
-        len_dataset, latent_dim = samples_zCx.shape
+        
+        if dataset_name in ['dsprites']:
+            try:
+                lat_sizes = dataloader.dataset.lat_sizes
+                lat_names = dataloader.dataset.lat_names
+                lat_imgs = dataloader.dataset.imgs
+            except AttributeError:
+                raise ValueError("Dataset needs to have known true factors of variations to compute the metric. This does not seem to be the case for {}".format(type(dataloader.__dict__["dataset"]).__name__))
+            
+            self.logger.info("Computing the empirical distribution q(z|x).")
+            samples_zCx, params_zCx = self._compute_q_zCx(dataloader)
+            len_dataset, latent_dim = samples_zCx.shape
 
-        self.logger.info("Estimating the marginal entropy.")
-        # marginal entropy H(z_j)
-        H_z = self._estimate_latent_entropies(samples_zCx, params_zCx)
+            self.logger.info("Estimating the marginal entropy.")
+            # marginal entropy H(z_j)
+            H_z = self._estimate_latent_entropies(samples_zCx, params_zCx)
 
-        # conditional entropy H(z|v)
-        samples_zCx = samples_zCx.view(*lat_sizes, latent_dim)
-        params_zCx = tuple(p.view(*lat_sizes, latent_dim) for p in params_zCx)
-        mig = self._mutual_information_gap(sorted_mut_info, lat_sizes, storer=metric_helpers).item()
-        aam = self._axis_aligned_metric(sorted_mut_info, storer=metric_helpers).item()
-        torch.save(metric_helpers, os.path.join(self.save_dir, METRIC_HELPERS_FILE))
-        '''
+            # conditional entropy H(z|v)
+            samples_zCx = samples_zCx.view(*lat_sizes, latent_dim)
+            params_zCx = tuple(p.view(*lat_sizes, latent_dim) for p in params_zCx)
+            H_zCv = self._estimate_H_zCv(samples_zCx, params_zCx, lat_sizes, lat_names)
+
+            H_z = H_z.cpu()
+            H_zCv = H_zCv.cpu()
+
+            # I[z_j;v_k] = E[log \sum_x q(z_j|x)p(x|v_k)] + H[z_j] = - H[z_j|v_k] + H[z_j]
+            mut_info = - H_zCv + H_z
+            sorted_mut_info = torch.sort(mut_info, dim=1, descending=True)[0].clamp(min=0)
+
+            metric_helpers = {'marginal_entropies': H_z, 'cond_entropies': H_zCv}
+            mig = self._mutual_information_gap(sorted_mut_info, lat_sizes, storer=metric_helpers).item()
+            aam = self._axis_aligned_metric(sorted_mut_info, storer=metric_helpers).item()
+        
 
         metrics = {'DM': accuracies, 'MIG': mig, 'AAM': aam, 'FID': fid}
         print(f"Evaluated metrics for {dataset_name} as: {metrics}")
@@ -300,10 +323,6 @@ class Evaluator():
                         classifier = sklearn.ensemble.RandomForestClassifier(n_estimators = 150)
                     X_train, Y_train = data_train[method]
                     X_test, Y_test = data_test[method]
-
-                    #X_train, Y_train = X_train.cpu().detach().numpy(), Y_train.cpu().detach().numpy()
-                    #X_test, Y_test = X_test.cpu().detach().numpy(), Y_test.cpu().detach().numpy()
-
                     classifier.fit(X_train, Y_train)
                     train_acc = np.mean(classifier.predict(X_train)==Y_train)
                     test_acc[model_class][method] = np.mean(classifier.predict(X_test)==Y_test)
@@ -326,7 +345,6 @@ class Evaluator():
             y = np.random.randint(dataset.lat_sizes.size, size=1)
         
         
-        #y = np.random.randint(dataset.lat_sizes.size, size=1)
         y_lat = np.random.randint(dataset.lat_sizes[y], size=sample_size)
 
         # Helper function to show images
@@ -345,12 +363,10 @@ class Evaluator():
                     ax.axis('off')
             plt.show()
   
-        #print("y", y)
-        #print("ylat", y_lat)
+
         imgs_sampled1  = dataset.images_from_data_gen(sample_size, y, y_lat)
         imgs_sampled2  = dataset.images_from_data_gen(sample_size, y, y_lat)
-        #show_images_grid(imgs_sampled1)
-        #show_images_grid(imgs_sampled2)
+
         res = {}
         #calculate the expectation values of the normal distributions in the latent representation for the given images
         for method in methods.keys():
