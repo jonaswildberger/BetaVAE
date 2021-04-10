@@ -93,6 +93,8 @@ def parse_arguments(args_to_parse):
         help='Whether to use 5 or 4 latents in Dsprites')      
     training.add_argument('--loss-b', type=float, default=1.,
         help='beta factor for loss')
+    training.add_argument('--multiple_l', type=bool, default=False,
+        help='Whether to do search across L values for classifiers')
 
     model = parser.add_argument_group('Model specfic options')
     model.add_argument('-m', '--model-type',
