@@ -275,7 +275,7 @@ def main(args):
         logger.info("Evaluation time :)")
 
         model.eval()
-        evaluator = Evaluator(model, device=device, sample_size = args.sample_size, dataset_size = args.dataset_size, all_latents= args.all_latents, use_wandb = args.wandb_log, seed=args.seed)
+        evaluator = Evaluator(model, device=device, sample_size = args.sample_size, dataset_size = args.dataset_size, all_latents= args.all_latents, use_wandb = args.wandb_log, seed=args.seed, multiple_l=args.multiple_l)
 
         metrics = evaluator(test_loader, dataset_name = args.dataset)
         wandb.log({"final":{"metric":metrics}})
