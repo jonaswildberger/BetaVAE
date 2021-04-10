@@ -91,7 +91,7 @@ class Evaluator():
                 accuracies = self._disentanglement_metric(dataloader.dataset, method_names, sample_size=self.sample_size, n_epochs = 10000, dataset_size=self.dataset_size)
             else:
                 Ls = [16,64,128,256]
-                accuracies = {"L"+sample_size: self._disentanglement_metric(dataloader.dataset, method_names, sample_size=sample_size, 
+                accuracies = {"L"+str(sample_size): self._disentanglement_metric(dataloader.dataset, method_names, sample_size=sample_size, 
                     n_epochs = 10000, dataset_size=self.dataset_size) for sample_size in tqdm(Ls, desc = "Iterating over different sample_sizes")}
         
         if dataset_name in ['dsprites']:
