@@ -92,10 +92,6 @@ class Evaluator():
                 Ls = [16,64,128,256]
                 accuracies = {"L"+sample_size: self._disentanglement_metric(dataloader.dataset, method_names, sample_size=self.sample_size, 
                     n_epochs = 10000, dataset_size=self.dataset_size) for sample_size in Ls}
-
-        if self.use_wandb:
-                # wandb.log(accuracies)
-            wandb.save("disentanglement_metrics.h5")
         
         if dataset_name in ['dsprites']:
             try:
