@@ -563,7 +563,7 @@ class Evaluator():
         mean = params_zCX[0].unsqueeze(-1).expand(len_dataset, latent_dim, n_samples)
         log_var = params_zCX[1].unsqueeze(-1).expand(len_dataset, latent_dim, n_samples)
         log_N = math.log(len_dataset)
-        with trange(n_samples, leave=False, disable=self.is_progress_bar) as t:
+        with trange(n_samples, leave=False, disable=True) as t:
             for k in range(0, n_samples, mini_batch_size):
                 # log q(z_j|x) for n_samples
                 idcs = slice(k, k + mini_batch_size)
