@@ -16,6 +16,7 @@ from torch.nn import functional as F
 from utils.fid import get_fid_value
 import time 
 import wandb
+from functools import reduce
 
 import matplotlib.pyplot as plt
 
