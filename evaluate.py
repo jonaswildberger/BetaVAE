@@ -86,7 +86,7 @@ class Evaluator():
         
         if dataset_name in ['dsprites', 'mpi3dtoy', '3dshapes']: 
             self.logger.info("Computing the disentanglement metric")
-            method_names = ["VAE", "PCA", "ICA", "T-SNE","UMAP", "DensUMAP"]
+            method_names = ["VAE", "PCA", "ICA"]
             if self.multiple_l is False:
                 accuracies = self._disentanglement_metric(dataloader.dataset, method_names, sample_size=self.sample_size, n_epochs = 10000, dataset_size=self.dataset_size)
             else:
@@ -187,28 +187,6 @@ class Evaluator():
 
                 runtimes[method_name] = time.time()-start
 
-            elif method_name == "T-SNE":
-                continue
-               
-            elif method_name == "UMAP":
-                if self.higgins_drop_slow:
-                    continue
-                else:
-                    start = time.time() 
-                    import umap
-                    self.logger.info("Training UMAP...")
-                    umap_model = umap.UMAP(random_state=self.seed, densmap=False, n_components=self.model.latent_dim)
-                    imgs_umap = np.reshape(dataset.imgs, (dataset.imgs.shape[0], dataset.imgs.shape[1]**2))
-                    size = min(25000, len(imgs_umap))
-                    idx = np.random.randint(len(imgs_umap), size = size)
-                    imgs_umap = imgs_umap[idx, :]       #not enough memory for full dataset -> repeat with random subsets 
-                    umap_model.fit(imgs_umap)
-                    methods["UMAP"] = umap_model
-                    self.logger.info("Done")
-                    runtimes[method_name] = time.time()-start
-
-            elif method_name == "DensUMAP":
-                continue
 
             else: 
                 raise ValueError("Unknown method : {}".format(method_name))
@@ -401,45 +379,7 @@ class Evaluator():
                 
                 mu1 = ica.transform(imgs_sampled_ica1)
                 mu2 = ica.transform(imgs_sampled_ica2)
-            elif method == "T-SNE":
-                continue
-                # tsne = methods[method]
-                
-                # #flatten images
-                # imgs_sampled_tsne1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
-                # imgs_sampled_tsne2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
-                
-                # mu1 = torch.from_numpy(tsne.fit_transform(imgs_sampled_tsne1)).float()
-                # mu2 = torch.from_numpy(tsne.fit_transform(imgs_sampled_tsne2)).float()
-            elif method == "UMAP":
-                if self.higgins_drop_slow:
-                    continue
-                else:
-                    umap = methods[method]
-                    #flatten images
-                    imgs_sampled1 = imgs_sampled1[0:100]
-                    imgs_sampled2 = imgs_sampled2[0:100]
-                    if dataset.imgs.ndim == 4:
-                        imgs_sampled_umap1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[1]*imgs_sampled1.shape[2]**2))
-                        imgs_sampled_umap2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[1]*imgs_sampled2.shape[2]**2))
-                    else:   
-                        imgs_sampled_umap1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
-                        imgs_sampled_umap2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
-                    if not self.use_NN_classifier:
-                        mu1 = umap.transform(imgs_sampled_umap1)
-                        mu2 = umap.transform(imgs_sampled_umap2)
-                    else:
-                        mu1 = torch.from_numpy(umap.transform(imgs_sampled_umap1)).float()
-                        mu2 = torch.from_numpy(umap.transform(imgs_sampled_umap2)).float()
-            elif method == "DensUMAP":
-                continue
-                # densumap = methods[method]
-                # #flatten images
-                # imgs_sampled_densumap1 = torch.reshape(imgs_sampled1, (imgs_sampled1.shape[0], imgs_sampled1.shape[2]**2))
-                # imgs_sampled_densumap2 = torch.reshape(imgs_sampled2, (imgs_sampled2.shape[0], imgs_sampled2.shape[2]**2))
-                
-                # mu1 = torch.from_numpy(densumap.fit_transform(imgs_sampled_densumap1)).float()
-                # mu2 = torch.from_numpy(densumap.fit_transform(imgs_sampled_densumap2)).float()
+
                 
             else: 
                 raise ValueError("Unknown method : {}".format(method)) 

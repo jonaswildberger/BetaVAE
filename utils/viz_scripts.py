@@ -64,36 +64,6 @@ whole_fig.write_image("gt_latents.png")
 
 
 
-# import wandb
-# api = wandb.Api()
-
-# # Project is specified by <entity/project-name>
-# runs = api.runs("atml/atmlbetavae")
-# summary_list = [] 
-# config_list = [] 
-# name_list = [] 
-# for run in runs: 
-#     # run.summary are the output key/values like accuracy.
-#     # We call ._json_dict to omit large files 
-#     summary_list.append(run.summary._json_dict) 
-
-#     # run.config is the input metrics.
-#     # We remove special values that start with _.
-#     config = {k:v for k,v in run.config.items() if not k.startswith('_')}
-#     config_list.append(config) 
-
-#     # run.name is the name of the run.
-#     name_list.append(run.name)       
-
-# import pandas as pd 
-# summary_df = pd.DataFrame.from_records(summary_list) 
-# config_df = pd.DataFrame.from_records(config_list) 
-# name_df = pd.DataFrame({'name': name_list}) 
-# all_df = pd.concat([name_df, config_df,summary_df], axis=1)
-
-# all_df.to_csv("project.csv")
-
-
 import pandas as pd
 import numpy as np
 import re
@@ -139,6 +109,84 @@ for L in [0.1, 1.0, 4.0, 10.0]:
     plt.plot(grouped[L]["x"], grouped[L]["y"], marker='o', label = f"Beta={L}")
 
 plt.xlabel('Sample size L for the Higgins metric')
+plt.ylabel('Disentanglement metric')
+plt.legend()
+plt.savefig('sample_size.png', dpi=400)
+
+
+
+
+
+
+
+import pandas as pd
+import numpy as np
+import re
+
+data = pd.read_csv("wandb_export_Ls2.csv")
+data = data.T
+garbage = ~np.logical_or(data.index.str.contains('MAX'), data.index.str.contains('MIN'))
+data = data[garbage]
+new_vals = []
+new_index = list(data.index.str.split('final'))
+new_index[0] = ['beta', 'L']
+new_index = new_index[1:]
+data = data.iloc[1:]
+for i in range(len(new_index)):
+    
+    new_index[i][0] = re.findall(r'[\d\.]+', new_index[i][0])[0] if "VAE" in new_index[i][1] else new_index[i][1].split('.')[-1]
+    new_index[i][1] = re.findall(r'L\d+', new_index[i][1])[0][1:] 
+
+seen = set()
+interim = []
+
+for idx, elem in enumerate(new_index):
+    if tuple(elem) in seen:
+        continue
+    seen.add(tuple(elem))
+    interim.append(elem)
+    new_vals.append(data[data.columns[0]].values[idx])
+new_index = interim
+interim = []
+for elem in new_index:
+    if elem[0] not in ['PCA', 'ICA']:
+        interim.append(elem)
+    elif elem[0] in ['PCA']:
+        interim.append([99, elem[1]])
+    elif elem[0] in ['ICA']:
+        interim.append([999, elem[1]])
+new_index = interim
+
+xs = [x[0] for x in new_index]
+labels = [x[1] for x in new_index]
+vals = new_vals
+
+all_sorted = sorted(list(zip([float(x) for x in xs], [float(val) for val in vals],
+    [int(label) for label in labels] )), key = lambda x: (x[0], x[2]))
+xs = [elem[2] for elem in all_sorted]
+vals = [elem[1] for elem in all_sorted]
+labels = [elem[0] for elem in all_sorted]
+
+grouped = {}
+# for L in [16,64,128,256]:
+for L in [0.1, 1.0, 4.0, 10.0, 99, 999]:
+    idxs = []
+    for i in range(len(xs)):
+        if labels[i] == L:
+            idxs.append(i)
+    if L == 99:
+        L = "PCA"
+    if L == 999:
+        L = "ICA"
+    grouped[L] = {"x":[xs[idx] for idx in idxs], "y":[vals[idx] for idx in idxs], 
+        "labels":[labels[idx] for idx in idxs]}
+
+colors = {0.1:"midnightblue", 1:"royalblue", 4:"cornflowerblue", 10:"skyblue", "PCA": "moccasin", "ICA":"lightcoral"}
+# for L in [16,64,128,256]:
+for L in [0.1, 1.0, 4.0, 10.0, "PCA", "ICA"]:
+    plt.plot(grouped[L]["x"], grouped[L]["y"], marker='o', label = f"Beta={L}" if type(L) is float else L, color=colors[L])
+
+plt.xlabel('Sample size L for the disentanglement metric')
 plt.ylabel('Disentanglement metric')
 plt.legend()
 plt.savefig('sample_size.png', dpi=400)
