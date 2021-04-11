@@ -14,7 +14,7 @@ import itertools
 from utils.datasets import get_background
 from utils.viz_helpers import (read_loss_from_file, add_labels, make_grid_img,
                                sort_list_by_other, FPS_GIF, concatenate_pad)
-from utils.miroslav import graph_latent_samples
+from utils.viz_new_plots import graph_latent_samples
 
 TRAIN_FILE = "train_losses.log"
 DECIMAL_POINTS = 3
