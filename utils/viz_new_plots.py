@@ -167,14 +167,3 @@ def latent_viz(model, loader, dataset_name, raw_dataset, steps=75, device='cuda'
         "labels":true_labels, "dim_reduction_samples":dim_reduction_samples}
     return plots, all_data, dim_reduction_models
 
-
-def cluster_metric(post_samples, labels, n_clusters):
-    labels = list(itertools.chain.from_iterable(labels))
-    post_samples = list(itertools.chain.from_iterable(post_samples))
-    kmeans = KMeans(n_clusters, random_state=1).fit(post_samples)
-    cluster_assignments = kmeans.predict(post_samples)
-    homogeneity = sklearn.metrics.homogeneity_score(labels, cluster_assignments)
-    return homogeneity
-
-
-

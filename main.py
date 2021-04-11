@@ -16,7 +16,7 @@ from utils.helpers import *
 from training import Trainer, save_model
 from evaluate import Evaluator
 from utils.visualize import Visualizer, GifTraversalsTraining
-from utils.miroslav import wandb_auth, latent_viz, cluster_metric
+from utils.viz_new_plots import wandb_auth, latent_viz
 from utils.viz_helpers import get_samples
 
 import wandb
