@@ -37,6 +37,35 @@ axarr[2].axis('off')
 f.savefig("qual_quant_contrast.png", dpi=400, bbox_inches='tight', pad_inches=0)
 
 
+img1 = "traversals_mlp.png"
+score1 = 1
+img3 = "traversals_original.png"
+score3 = 0.995
+img2 = "traversals_gallant.png"
+score2 = 1 
+font = {'family' : 'normal',
+        'size'   : 7}
+plt.rc('font')
+
+img1 = mpimg.imread(img1)
+img2 = mpimg.imread(img2)
+img3 = mpimg.imread(img3)
+
+
+f, axarr = plt.subplots(1,3)
+axarr[0].imshow(img1)
+axarr[1].imshow(img2)
+axarr[2].imshow(img3)
+axarr[1].set_title(f"Disentanglement = {score2}", font)
+axarr[0].set_title(f"Disentanglement = {score1}", font)
+axarr[2].set_title(f"Disentanglement = {score3}", font)
+
+axarr[0].axis('off')
+axarr[1].axis('off')
+axarr[2].axis('off')
+
+f.savefig("qual_quant_contrast_mix.png", dpi=400, bbox_inches='tight', pad_inches=0)
+
 
 fig = plotly.io.read_json(open("pca_40_lowbeta_gt_latent.plotly.json", 'r'))
 fig.update_layout(paper_bgcolor='rgb(255,255,255)', plot_bgcolor='rgb(255,255,255)',title={'text':"Ground truth latent traversal on dSprites", 'x':0.47, 
